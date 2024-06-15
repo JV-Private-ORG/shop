@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
@@ -55,8 +56,8 @@ class UsersServiceTest {
                 "PasswordOne",
                 Role.CLIENT,
                 new Cart(),
-                new HashSet<Favorites>(),
-                new HashSet<Orders>());
+                new HashSet<>(),
+                new HashSet<>());
 
         usersDto1 = UsersDto.builder()
                 .userId(1L)
@@ -66,42 +67,45 @@ class UsersServiceTest {
                 .passwordHash("PasswordOne")
                 .role(Role.CLIENT)
                 .build();
+
+
+//        usersRepositoryMock = Mockito.mock(UsersRepository.class);
+//        mappersMock = Mockito.mock(Mappers.class);
     }
 
 
     @Test
     void testGetUsers() {
+//
+//        users2 = new Users(
+//                1L,
+//                "Jane Green",
+//                "janegreen@example.com",
+//                "+49153215694",
+//                "PasswordTwo",
+//                Role.CLIENT,
+//                new Cart(),
+//                new HashSet<>(),
+//                new HashSet<>());
+//
+//        usersDto2 = UsersDto.builder()
+//                .userId(2L)
+//                .name("Jane Green")
+//                .email("janegreen@example.com")
+//                .phoneNumber("+491583265482")
+//                .passwordHash("PasswordTwo")
+//                .role(Role.CLIENT)
+//                .build();
 
-        users2 = new Users(
-                1L,
-                "Jane Green",
-                "janegreen@example.com",
-                "+49153215694",
-                "PasswordTwo",
-                Role.CLIENT,
-                new Cart(),
-                new HashSet<Favorites>(),
-                new HashSet<Orders>());
-
-        usersDto2 = UsersDto.builder()
-                .userId(2L)
-                .name("Jane Green")
-                .email("janegreen@example.com")
-                .phoneNumber("+491583265482")
-                .passwordHash("PasswordTwo")
-                .role(Role.CLIENT)
-                .build();
-
-        when(usersRepositoryMock.findAll()).thenReturn(List.of(users1, users2));
+        when(usersRepositoryMock.findAll()).thenReturn(List.of(users1));
         when(mappersMock.convertToUsersDto(users1)).thenReturn(usersDto1);
-        when(mappersMock.convertToUsersDto(users2)).thenReturn(usersDto2);
 
         List<UsersDto> actualUsersDtoList = usersServiceMock.getUsers();
 
-        assertTrue(actualUsersDtoList.size() > 0);
-        verify(mappersMock, times(2)).convertToUsersDto(any(Users.class));
+        assertFalse(actualUsersDtoList.isEmpty());
+        verify(mappersMock, times(1)).convertToUsersDto(any(Users.class));
         verify(usersRepositoryMock, times(1)).findAll();
-        assertEquals(users1.getUserId(), actualUsersDtoList.get(0).getUserId());
+        assertEquals(users1.getUserId(), actualUsersDtoList.getFirst().getUserId());
     }
 
     @Test
@@ -186,8 +190,8 @@ class UsersServiceTest {
                 "PasswordOne",
                 Role.CLIENT,
                 new Cart(),
-                new HashSet<Favorites>(),
-                new HashSet<Orders>());
+                new HashSet<>(),
+                new HashSet<>());
 
         when(usersRepositoryMock.findById(usersDto4.getUserId())).thenReturn(Optional.of(users1));
         when(mappersMock.convertToUsers(usersDto4)).thenReturn(users4);

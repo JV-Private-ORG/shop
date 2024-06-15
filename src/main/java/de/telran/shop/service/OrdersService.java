@@ -4,6 +4,10 @@ import de.telran.shop.config.MapperUtil;
 import de.telran.shop.dto.OrdersDto;
 import de.telran.shop.entity.Orders;
 import de.telran.shop.entity.Users;
+import de.telran.shop.exceptions.DataNotFoundInDataBaseException;
+import de.telran.shop.exceptions.InsufficientDataException;
+import de.telran.shop.exceptions.InvalidValueExeption;
+import de.telran.shop.exceptions.WrongIdException;
 import de.telran.shop.mapper.Mappers;
 import de.telran.shop.repository.OrdersRepository;
 import de.telran.shop.repository.UsersRepository;
@@ -31,11 +35,11 @@ public class OrdersService {
 
     public OrdersDto getOrdersById(Long id) {
         Orders orders = ordersRepository.findById(id).orElse(null);
-        Users users = orders.getUsers();
-        OrdersDto ordersDto = null;
-
-        if (orders != null && users != null) {
+        OrdersDto ordersDto;
+        if (orders != null) {
             ordersDto = mappers.convertToOrdersDto(orders);
+        } else {
+            throw new DataNotFoundInDataBaseException("Data not found in database.");
         }
         return ordersDto;
     }
@@ -45,18 +49,20 @@ public class OrdersService {
         Orders orders = ordersRepository.findById(id).orElse(null);
         if (orders != null) {
             ordersRepository.delete(orders);
+        } else {
+            throw new DataNotFoundInDataBaseException("Data not found in database.");
         }
     }
 
     public OrdersDto insertOrders(OrdersDto ordersDto) {
         if (ordersDto.getUsers() == null) {
-            return null;
+            throw new InsufficientDataException("Data you entered is insufficient.");
         }
         if (ordersDto.getUsers().getUserId() == null){
-            return null;
+            throw new InsufficientDataException("Data you entered is insufficient.");
         }
         if (usersRepository.findById(ordersDto.getUsers().getUserId()).orElse(null) == null) {
-            return null;
+            throw new DataNotFoundInDataBaseException("Data not found in database.");
         }
         Orders orders = mappers.convertToOrders(ordersDto);
 
@@ -74,23 +80,21 @@ public class OrdersService {
 
     public OrdersDto updateOrders(OrdersDto ordersDto) {
         if (ordersDto.getOrderId() <= 0 || ordersDto.getUsers().getUserId() <= 0) { // При редактировании такого быть не должно, нужно вывести пользователю ошибку
-            return null;
+            throw new InvalidValueExeption("The value you entered is not valid.");
         }
 
         Orders orders = ordersRepository.findById(ordersDto.getOrderId()).orElse(null);
-        Users users = orders.getUsers();
-        if (orders == null || users == null) {// Объект в БД не найден с таким orderId, нужно вывести пользователю ошибку
-            return null;
+               if (orders == null) {// Объект в БД не найден с таким orderId, нужно вывести пользователю ошибку
+            throw new DataNotFoundInDataBaseException("Data not found in database.");
         }
 
-        if (ordersDto.getOrderId() != orders.getOrderId()) {//номер orders, введенный пользователем не совпадает с тем, который прописан в базе данных
-            return null;
-        }
+//        if (ordersDto.getOrderId() != orders.getOrderId()) {//номер orders, введенный пользователем не совпадает с тем, который прописан в базе данных
+//            throw new WrongIdException("Id you entered not found in database.");
+//        }
         orders = mappers.convertToOrders(ordersDto);
         orders.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         Orders updatedOrders = ordersRepository.save(orders);
-        OrdersDto responseOrdersDto = mappers.convertToOrdersDto(updatedOrders);
 
-        return responseOrdersDto;
+        return mappers.convertToOrdersDto(updatedOrders);
     }
 }

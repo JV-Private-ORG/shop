@@ -3,9 +3,13 @@ package de.telran.shop.service;
 import de.telran.shop.config.MapperUtil;
 import de.telran.shop.dto.UsersDto;
 import de.telran.shop.entity.Users;
+import de.telran.shop.exceptions.DataNotFoundInDataBaseException;
+import de.telran.shop.exceptions.InvalidValueExeption;
+import de.telran.shop.exceptions.WrongIdException;
 import de.telran.shop.mapper.Mappers;
 import de.telran.shop.repository.CartRepository;
 import de.telran.shop.repository.UsersRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +32,11 @@ public class UsersService {
 
     public UsersDto getUsersById(Long id) {
         Users users = usersRepository.findById(id).orElse(null);
-        UsersDto usersDto = null;
+        UsersDto usersDto;
         if (users != null) {
             usersDto = mappers.convertToUsersDto(users);
+        } else {
+            throw new DataNotFoundInDataBaseException("Data not found in database.");
         }
         return usersDto;
     }
@@ -40,7 +46,10 @@ public class UsersService {
         Users users = usersRepository.findById(id).orElse(null);
         if (users != null) {
             usersRepository.delete(users);
+        } else {
+            throw new DataNotFoundInDataBaseException("Data not found in database.");
         }
+
     }
 
 
@@ -55,23 +64,22 @@ public class UsersService {
 
 
     public UsersDto updateUsers(UsersDto usersDto) {
-        if (usersDto.getUserId() <= 0) { // При редактировании такого быть не должно, нужно вывести пользователю ошибку
-            return null;
+        if (usersDto.getUserId() <= 0) {
+            throw new InvalidValueExeption("The value you entered is not valid.");
         }
 
         Users users = usersRepository.findById(usersDto.getUserId()).orElse(null);
-        if (users == null) {// Объект в БД не найден с таким Id, нужно вывести пользователю ошибку
-            return null;
+        if (users == null) {
+            throw new DataNotFoundInDataBaseException("Data not found in database.");
         }
 
-        if (usersDto.getUserId() != users.getUserId()) {//номер users, введенный пользователем не совпадает с тем, который прописан в базе данных
-            return null;
-        }
+//        if (usersDto.getUserId() != users.getUserId()) {//номер users, введенный пользователем не совпадает с тем, который прописан в базе данных
+//            throw new WrongIdException("Id you entered not found in database.");
+//        }
 
         users = mappers.convertToUsers(usersDto);
         Users updatedUsers = usersRepository.save(users);
-        UsersDto responseUsersDto = mappers.convertToUsersDto(updatedUsers);
 
-        return responseUsersDto;
+        return mappers.convertToUsersDto(updatedUsers);
     }
 }
