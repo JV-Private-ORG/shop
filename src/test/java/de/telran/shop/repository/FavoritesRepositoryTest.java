@@ -30,7 +30,7 @@ class FavoritesRepositoryTest {
     @Test
     //@DisplayName("Тест на получение данных")
     void testGet(){
-        Favorites favoritesExpected = new Favorites(1L, 1, null);
+        Favorites favoritesExpected = new Favorites(1L, 1L, null);
         Optional<Favorites> favoritesActual = favoritesRepositoryTest.findById(1L);
         Assertions.assertTrue(favoritesActual.isPresent());
         Assertions.assertEquals(favoritesExpected.getFavoriteId(),favoritesActual.get().getFavoriteId());
@@ -43,11 +43,11 @@ class FavoritesRepositoryTest {
 //        Assertions.assertTrue(usersActualTest.isPresent());
 
         Favorites favoritesExpected = new Favorites();
-        favoritesExpected.setProductId(1);
+        favoritesExpected.setProductId(1L);
 
         // Заглушка для пользователя
         Users usersTest = new Users();
-        usersTest.setUserId(1);
+        usersTest.setUserId(1L);
 
         favoritesExpected.setUsers(usersTest);
 
@@ -65,7 +65,7 @@ class FavoritesRepositoryTest {
         Assertions.assertTrue(favoritesDb.isPresent());
 
         Favorites favoritesExpected = favoritesDb.get();
-        favoritesExpected.setProductId(2);
+        favoritesExpected.setProductId(2L);
 
         Favorites favoritesActual = favoritesRepositoryTest.save(favoritesExpected);
         Assertions.assertNotNull(favoritesActual);

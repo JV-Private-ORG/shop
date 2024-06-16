@@ -66,7 +66,7 @@ public class OrderItemsService {
         }
 
         OrderItems orderItems = mappers.convertToOrderItems(orderItemsDto);
-        orderItems.setOrderItemId(0);
+        orderItems.setOrderItemId(0L);
 
         Orders orders = ordersRepository.findById(orderItemsDto.getOrders().getOrderId()).orElse(null);
         orderItems.setOrders(orders);

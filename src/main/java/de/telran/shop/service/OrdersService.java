@@ -66,7 +66,7 @@ public class OrdersService {
         }
         Orders orders = mappers.convertToOrders(ordersDto);
 
-        orders.setOrderId(0);
+        orders.setOrderId(0L);
         orders.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
         Users users = usersRepository.findById(ordersDto.getUsers().getUserId()).orElse(null);
@@ -79,12 +79,12 @@ public class OrdersService {
 
 
     public OrdersDto updateOrders(OrdersDto ordersDto) {
-        if (ordersDto.getOrderId() <= 0 || ordersDto.getUsers().getUserId() <= 0) { // При редактировании такого быть не должно, нужно вывести пользователю ошибку
+        if (ordersDto.getOrderId() <= 0 || ordersDto.getUsers().getUserId() <= 0) {
             throw new InvalidValueExeption("The value you entered is not valid.");
         }
 
         Orders orders = ordersRepository.findById(ordersDto.getOrderId()).orElse(null);
-               if (orders == null) {// Объект в БД не найден с таким orderId, нужно вывести пользователю ошибку
+               if (orders == null) {
             throw new DataNotFoundInDataBaseException("Data not found in database.");
         }
 

@@ -15,7 +15,7 @@ import java.util.Set;
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long orderId;
+    private Long orderId;
 
     private Timestamp  createdAt;
 

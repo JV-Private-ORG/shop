@@ -15,11 +15,11 @@ public class OrderItems {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long orderItemId;
+    private Long orderItemId;
 
-    private long  productId;
+    private Long  productId;
 
-    private long quantity;
+    private Integer quantity;
 
     private BigDecimal priceAtPurchase;
 

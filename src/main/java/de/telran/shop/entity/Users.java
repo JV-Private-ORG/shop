@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,7 +16,7 @@ import java.util.Set;
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userId;
+    private Long userId;
 
     private String name;
 
@@ -28,7 +29,7 @@ public class Users {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
     private Cart cart;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)

@@ -25,9 +25,8 @@ public class UsersService {
 
     public List<UsersDto> getUsers() {
         List<Users> usersList = usersRepository.findAll();
-        List<UsersDto> usersDtoList = MapperUtil.convertList(usersList, mappers::convertToUsersDto);
 
-        return usersDtoList;
+        return MapperUtil.convertList(usersList, mappers::convertToUsersDto);
     }
 
     public UsersDto getUsersById(Long id) {
@@ -56,7 +55,7 @@ public class UsersService {
     public UsersDto insertUsers(UsersDto usersDto) {
         Users users = mappers.convertToUsers(usersDto);
 
-        users.setUserId(0);
+        users.setUserId(0L);
         Users savedUsers = usersRepository.save(users);
 
         return mappers.convertToUsersDto(savedUsers);
@@ -72,10 +71,6 @@ public class UsersService {
         if (users == null) {
             throw new DataNotFoundInDataBaseException("Data not found in database.");
         }
-
-//        if (usersDto.getUserId() != users.getUserId()) {//номер users, введенный пользователем не совпадает с тем, который прописан в базе данных
-//            throw new WrongIdException("Id you entered not found in database.");
-//        }
 
         users = mappers.convertToUsers(usersDto);
         Users updatedUsers = usersRepository.save(users);

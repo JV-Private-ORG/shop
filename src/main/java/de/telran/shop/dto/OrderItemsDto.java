@@ -15,9 +15,9 @@ import java.math.BigDecimal;
 @Builder
 public class OrderItemsDto {
 
-    private long orderItemId;
-    private long  productId;
-    private long quantity;
+    private Long orderItemId;
+    private Long  productId;
+    private Integer quantity;
     private BigDecimal priceAtPurchase;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -41,13 +41,14 @@ class CartServiceTest {
 
     private CartDto expectedCartDto;
     private Cart expectedCart;
+
     @BeforeEach
     void setUp() {
         expectedCartDto = CartDto.builder()
                 .cartId(1L)
                 .users(null)
                 .build();
-        expectedCart = new Cart( 1L,
+        expectedCart = new Cart(1L,
                 null,
                 new Users()
         );
@@ -57,22 +58,25 @@ class CartServiceTest {
     void getCartTest() {
         when(cartRepositoryMock.findAll()).thenReturn(List.of(expectedCart));
         when(mappersMock.convertToCartDto(any(Cart.class))).thenReturn(expectedCartDto);
-        assertEquals(List.of(expectedCartDto),cartServiceTest.getCart());
+        assertEquals(List.of(expectedCartDto), cartServiceTest.getCart());
     }
 
     @Test
     void getCartByIdTest() {
         when(cartRepositoryMock.findById(anyLong())).thenReturn(Optional.of(expectedCart));
         when(mappersMock.convertToCartDto(any(Cart.class))).thenReturn(expectedCartDto);
-        assertEquals(cartServiceTest.getCartById(expectedCart.getCartId()),expectedCartDto);
+        assertEquals(cartServiceTest.getCartById(expectedCart.getCartId()), expectedCartDto);
         verify(mappersMock, times(1)).convertToCartDto(any(Cart.class));
     }
 
     @Test
     void deleteCartById() {
         long id = 1L;
+        when(cartRepositoryMock.findById(id)).thenReturn(Optional.of(expectedCart));
         cartServiceTest.deleteCartById(id);
-        verify(cartRepositoryMock,times(1)).deleteById(id);
+
+        assertNull(cartServiceTest.getCartById(id));
+        verify(cartRepositoryMock, times(1)).delete(expectedCart);
     }
 
     @Test

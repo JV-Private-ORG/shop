@@ -165,7 +165,6 @@ class OrdersServiceTest {
 
         Long id = 1l;
         when(ordersRepositoryMock.findById(id)).thenReturn(Optional.of(orders1));
-
         ordersServiceMock.deleteOrdersById(id);
 
         assertNull(ordersServiceMock.getOrdersById(id));

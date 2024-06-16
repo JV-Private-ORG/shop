@@ -43,13 +43,13 @@ class CartItemsControllerTest {
                 .cartItemId(1L)
                 .cart(null)
                 .quantity(2)
-                .productId(2)
+                .productId(2L)
                 .build();
         cartItemsExpected2 = CartItemsDto.builder()
                 .cartItemId(2L)
                 .cart(null)
                 .quantity(2)
-                .productId(2)
+                .productId(2L)
                 .build();
 
 

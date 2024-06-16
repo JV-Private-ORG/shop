@@ -102,9 +102,10 @@ class UsersServiceTest {
 
         List<UsersDto> actualUsersDtoList = usersServiceMock.getUsers();
 
-        assertFalse(actualUsersDtoList.isEmpty());
         verify(mappersMock, times(1)).convertToUsersDto(any(Users.class));
         verify(usersRepositoryMock, times(1)).findAll();
+
+        assertFalse(actualUsersDtoList.isEmpty());
         assertEquals(users1.getUserId(), actualUsersDtoList.getFirst().getUserId());
     }
 

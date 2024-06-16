@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CartItemsDto {
-    private long cartItemId;
-    private long productId;
-    private int quantity;
+    private Long cartItemId;
+    private Long productId;
+    private Integer quantity;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("cart")
