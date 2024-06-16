@@ -21,7 +21,7 @@ public class CartItems {
 //    @Column(name = "productId")
     private Long  productId;
 
-    @Column(name = "Quantity")
+    @Column(name = "quantity")
     private Integer quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -8,7 +8,6 @@ import de.telran.shop.entity.Users;
 import de.telran.shop.mapper.Mappers;
 import de.telran.shop.repository.CartItemsRepository;
 import de.telran.shop.repository.CartRepository;
-import org.h2.engine.User;
 import org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -45,50 +44,49 @@ class CartItemsServiceTest {
 
     private CartItems cartItem1;
     private CartItems cartItem2;
-    private Cart cart1;
     private Cart cart2;
     private CartItemsDto cartItemsDto1;
     private CartItemsDto cartItemsDto2;
 
     @BeforeEach
     void setUp() {
-        cart1 = new Cart(
-                1l,
+        Cart cart1 = new Cart(
+                1L,
                 new HashSet<>(),
                 new Users()
         );
         cart2 = new Cart(
-                2l,
+                2L,
                 new HashSet<>(),
                 new Users()
         );
         cartItem1 = new CartItems(
-                1l,
-                3l,
+                1L,
+                3L,
                 12,
                 cart1
         );
         cartItem2 = new CartItems(
-                2l,
-                4l,
+                2L,
+                4L,
                 7,
                 cart2
         );
         cartItemsDto1 = CartItemsDto.builder()
-                .cartItemId(1l)
-                .productId(3l)
+                .cartItemId(1L)
+                .productId(3L)
                 .quantity(12)
                 .cart(CartDto.builder()
-                        .cartId(1l)
+                        .cartId(1L)
                         .build())
                 .build();
 
         cartItemsDto2 = CartItemsDto.builder()
-                .cartItemId(2l)
-                .productId(4l)
+                .cartItemId(2L)
+                .productId(4L)
                 .quantity(7)
                 .cart(CartDto.builder()
-                        .cartId(2l)
+                        .cartId(2L)
                         .build())
                 .build();
     }
@@ -100,14 +98,14 @@ class CartItemsServiceTest {
         when(mappers.convertToCartItemsDto(cartItem2)).thenReturn(cartItemsDto2);
 
         List<CartItemsDto> cartItems = cartItemsServiceMock.getCartItems();
-        Assertions.assertTrue(cartItems.size() > 0);
+        assertFalse(cartItems.isEmpty());
         verify(cartItemsRepositoryMock, Mockito.times(1)).findAll();
         verify(mappers,Mockito.times(2)).convertToCartItemsDto(any(CartItems.class));
     }
 
     @Test
     void getCartItemsById() {
-        Long id = 1l;
+        Long id = 1L;
         when(cartItemsRepositoryMock.findById(id)).thenReturn(Optional.of(cartItem1));
         when(mappers.convertToCartItemsDto(cartItem1)).thenReturn(cartItemsDto1);
 
@@ -123,7 +121,7 @@ class CartItemsServiceTest {
 
     @Test
     void deleteCartItemById() {
-        Long id = 1l;
+        Long id = 1L;
         when(cartItemsRepositoryMock.findById(id)).thenReturn(Optional.of(cartItem1));
 
         cartItemsServiceMock.deleteCartItemById(id);
@@ -132,19 +130,19 @@ class CartItemsServiceTest {
 
     @Test
     void insertCartItems() {
-        Long id = 2l;
+        Long id = 2L;
         CartItems cartItem3 = new CartItems(
-                3l,
-                8l,
+                3L,
+                8L,
                 1,
                 cart2
         );
         CartItemsDto cartItemsDto3 = CartItemsDto.builder()
-                .cartItemId(3l)
-                .productId(8l)
+                .cartItemId(3L)
+                .productId(8L)
                 .quantity(1)
                 .cart(CartDto.builder()
-                        .cartId(2l)
+                        .cartId(2L)
                         .build())
                 .build();
         when(cartRepositoryMock.findById(id)).thenReturn(Optional.of(cart2));

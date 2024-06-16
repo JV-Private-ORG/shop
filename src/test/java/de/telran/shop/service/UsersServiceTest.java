@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
@@ -36,14 +35,9 @@ class UsersServiceTest {
     private UsersService usersServiceMock;
 
     private UsersDto usersDto1;
-    private UsersDto usersDto2;
-    private UsersDto usersDto3;
-    private UsersDto usersDto4;
 
     private Users users1;
-    private Users users2;
-    private Users users3;
-    private Users users4;
+
 
     @BeforeEach
     void setUp() {
@@ -111,7 +105,7 @@ class UsersServiceTest {
 
     @Test
     void testGetUsersById() {
-        Long id = 1l;
+        Long id = 1L;
         when(usersRepositoryMock.findById(id)).thenReturn(Optional.of(users1));
         when(mappersMock.convertToUsersDto(users1)).thenReturn(usersDto1);
 
@@ -125,7 +119,7 @@ class UsersServiceTest {
 
     @Test
     void testDeleteUsersById() {
-        Long id = 1l;
+        Long id = 1L;
         when(usersRepositoryMock.findById(id)).thenReturn(Optional.of(users1));
 
         usersServiceMock.deleteUsersById(id);
@@ -137,7 +131,7 @@ class UsersServiceTest {
     @Test
     void testInsertUsers() {
 
-        usersDto3 = UsersDto.builder()
+        UsersDto usersDto3 = UsersDto.builder()
                 .name("Mary Anderson")
                 .email("maryanderson@example.com")
                 .phoneNumber("+491583265487")
@@ -145,7 +139,7 @@ class UsersServiceTest {
                 .role(Role.CLIENT)
                 .build();
 
-        users3 = new Users(
+        Users users3 = new Users(
                 0L,
                 "Mary Anderson",
                 "maryanderson@example.com",
@@ -153,8 +147,8 @@ class UsersServiceTest {
                 "PasswordOne",
                 Role.CLIENT,
                 new Cart(),
-                new HashSet<Favorites>(),
-                new HashSet<Orders>());
+                new HashSet<>(),
+                new HashSet<>());
 
         when(mappersMock.convertToUsers(usersDto3)).thenReturn(users3);
         when(usersRepositoryMock.save(any(Users.class))).thenReturn(users1);
@@ -174,7 +168,7 @@ class UsersServiceTest {
     @Test
     void testUpdateUsers() {
 
-        usersDto4 = UsersDto.builder()
+        UsersDto usersDto4 = UsersDto.builder()
                 .userId(1L)
                 .name("Mary Grey")
                 .email("marygrey@example.com")
@@ -183,7 +177,7 @@ class UsersServiceTest {
                 .role(Role.CLIENT)
                 .build();
 
-        users4 = new Users(
+        Users users4 = new Users(
                 1L,
                 "Mary Grey",
                 "marygrey@example.com",

@@ -1,10 +1,7 @@
 package de.telran.shop.service;
 
 import de.telran.shop.config.MapperUtil;
-import de.telran.shop.dto.CartDto;
 import de.telran.shop.dto.OrderItemsDto;
-import de.telran.shop.dto.OrdersDto;
-import de.telran.shop.dto.UsersDto;
 import de.telran.shop.entity.OrderItems;
 import de.telran.shop.entity.Orders;
 import de.telran.shop.entity.Users;
@@ -15,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +24,8 @@ public class OrderItemsService {
 
     public List<OrderItemsDto> getOrderItems() {
         List<OrderItems> orderItemsList = orderItemsRepository.findAll();
-        List<OrderItemsDto> orderItemsDtoList = MapperUtil.convertList(orderItemsList, mappers::convertToOrderItemsDto);
 
-        return orderItemsDtoList;
+        return MapperUtil.convertList(orderItemsList, mappers::convertToOrderItemsDto);
     }
 
 
@@ -41,7 +37,7 @@ public class OrderItemsService {
 
         OrderItemsDto orderItemsDto = null;
 
-        if (orderItems != null && orders != null && users != null) {
+        if (users != null) {
             orderItemsDto = mappers.convertToOrderItemsDto(orderItems);
         }
 
@@ -82,18 +78,18 @@ public class OrderItemsService {
         }
 
         OrderItems orderItems = orderItemsRepository.findById(orderItemsDto.getOrderItemId()).orElse(null);
+        assert orderItems != null;
         Orders orders = orderItems.getOrders();
-        if (orderItems == null || orders == null) {// Объект в БД не найден с таким orderId, нужно вывести пользователю ошибку
+        if (orders == null) {// Объект в БД не найден с таким orderId, нужно вывести пользователю ошибку
             return null;
         }
-        if (orderItemsDto.getOrderItemId() != orderItems.getOrderItemId()) {//номер orderItems, введенный пользователем не совпадает с тем, который прописан в базе данных
+        if (!Objects.equals(orderItemsDto.getOrderItemId(), orderItems.getOrderItemId())) {//номер orderItems, введенный пользователем не совпадает с тем, который прописан в базе данных
             return null;
         }
 
         orderItems = mappers.convertToOrderItems(orderItemsDto);
         OrderItems updatedOrderItems = orderItemsRepository.save(orderItems);
-        OrderItemsDto responseOrderItemsDto = mappers.convertToOrderItemsDto(updatedOrderItems);
 
-        return responseOrderItemsDto;
+        return mappers.convertToOrderItemsDto(updatedOrderItems);
     }
 }

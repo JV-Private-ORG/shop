@@ -2,7 +2,6 @@ package de.telran.shop.service;
 
 import de.telran.shop.config.MapperUtil;
 import de.telran.shop.dto.CartDto;
-import de.telran.shop.entity.Cart;
 import de.telran.shop.mapper.Mappers;
 import de.telran.shop.repository.CartItemsRepository;
 import de.telran.shop.repository.CartRepository;

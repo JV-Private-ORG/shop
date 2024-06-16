@@ -40,24 +40,13 @@ class OrdersServiceTest {
     private OrdersService ordersServiceMock;
 
     private OrdersDto ordersDto1;
-    private OrdersDto ordersDto2;
-    private OrdersDto ordersDto3;
-    private OrdersDto ordersDto4;
 
     private Orders orders1;
-    private Orders orders2;
-    private Orders orders3;
-    private Orders orders4;
-
-    private Users users1;
-    private Users users2;
-    private Users users3;
-    private Users users4;
 
     @BeforeEach
     void setUp() {
 
-        users1 = new Users(
+        Users users1 = new Users(
                 1L,
                 "Mary Anderson",
                 "maryanderson@example.com",
@@ -65,8 +54,8 @@ class OrdersServiceTest {
                 "PasswordOne",
                 Role.CLIENT,
                 new Cart(),
-                new HashSet<Favorites>(),
-                new HashSet<Orders>());
+                new HashSet<>(),
+                new HashSet<>());
 
         orders1 = new Orders(
                 1L,
@@ -77,7 +66,7 @@ class OrdersServiceTest {
                 Status.ORDERED,
                 Timestamp.valueOf(LocalDateTime.now()),
                 users1,
-                new HashSet<OrderItems>());
+                new HashSet<>());
 
         ordersDto1 = OrdersDto.builder()
                 .orderId(1L)
@@ -96,7 +85,7 @@ class OrdersServiceTest {
     @Test
     void testGetOrders() {
 
-        users2 = new Users(
+        Users users2 = new Users(
                 1L,
                 "Jane Green",
                 "janegreen@example.com",
@@ -104,10 +93,10 @@ class OrdersServiceTest {
                 "PasswordTwo",
                 Role.CLIENT,
                 new Cart(),
-                new HashSet<Favorites>(),
-                new HashSet<Orders>());
+                new HashSet<>(),
+                new HashSet<>());
 
-        orders2 = new Orders(
+        Orders orders2 = new Orders(
                 1L,
                 Timestamp.valueOf(LocalDateTime.now()),
                 "Oakstr, 36",
@@ -116,9 +105,9 @@ class OrdersServiceTest {
                 Status.PAID,
                 Timestamp.valueOf(LocalDateTime.now()),
                 users2,
-                new HashSet<OrderItems>());
+                new HashSet<>());
 
-        ordersDto2 = OrdersDto.builder()
+        OrdersDto ordersDto2 = OrdersDto.builder()
                 .orderId(1L)
                 .createdAt(Timestamp.valueOf(LocalDateTime.now()))
                 .deliveryAddress("Oakstr, 36")
@@ -137,17 +126,17 @@ class OrdersServiceTest {
 
         List<OrdersDto> actualOrdersDtoList = ordersServiceMock.getOrders();
 
-        assertTrue(actualOrdersDtoList.size() > 0);
+        assertFalse(actualOrdersDtoList.isEmpty());
         verify(mappersMock, times(2)).convertToOrdersDto(any(Orders.class));
         verify(ordersRepositoryMock, times(1)).findAll();
-        assertEquals(orders1.getOrderId(), actualOrdersDtoList.get(0).getOrderId());
-        assertEquals(orders1.getUsers().getUserId(), actualOrdersDtoList.get(0).getUsers().getUserId());
+        assertEquals(orders1.getOrderId(), actualOrdersDtoList.getFirst().getOrderId());
+        assertEquals(orders1.getUsers().getUserId(), actualOrdersDtoList.getFirst().getUsers().getUserId());
     }
 
     @Test
     void testGetOrdersById() {
 
-        Long id = 1l;
+        Long id = 1L;
         when(ordersRepositoryMock.findById(id)).thenReturn(Optional.of(orders1));
         when(mappersMock.convertToOrdersDto(orders1)).thenReturn(ordersDto1);
 
@@ -163,7 +152,7 @@ class OrdersServiceTest {
     @Test
     void tesDeleteOrdersById() {
 
-        Long id = 1l;
+        Long id = 1L;
         when(ordersRepositoryMock.findById(id)).thenReturn(Optional.of(orders1));
         ordersServiceMock.deleteOrdersById(id);
 
@@ -174,7 +163,7 @@ class OrdersServiceTest {
     @Test
     void testInsertOrders() {
 
-        ordersDto3 = OrdersDto.builder()
+        OrdersDto ordersDto3 = OrdersDto.builder()
                 .createdAt(Timestamp.valueOf(LocalDateTime.now()))
                 .deliveryAddress("Cherrystr, 19")
                 .contactPhone("+491583265487")
@@ -186,18 +175,18 @@ class OrdersServiceTest {
                         .build())
                 .build();
 
-        users3 = new Users(
-            1L,
-            "Mary Anderson",
-            "maryanderson@example.com",
-            "+491583265487",
-            "PasswordOne",
-            Role.CLIENT,
-            new Cart(),
-            new HashSet<Favorites>(),
-            new HashSet<Orders>());
+        Users users3 = new Users(
+                1L,
+                "Mary Anderson",
+                "maryanderson@example.com",
+                "+491583265487",
+                "PasswordOne",
+                Role.CLIENT,
+                new Cart(),
+                new HashSet<>(),
+                new HashSet<>());
 
-        orders3 = new Orders(
+        Orders orders3 = new Orders(
                 0L,
                 Timestamp.valueOf(LocalDateTime.now()),
                 "Cherrystr, 19",
@@ -206,7 +195,7 @@ class OrdersServiceTest {
                 Status.ORDERED,
                 Timestamp.valueOf(LocalDateTime.now()),
                 users3,
-                new HashSet<OrderItems>());
+                new HashSet<>());
 
         when(usersRepositoryMock.findById(ordersDto3.getUsers().getUserId())).thenReturn(Optional.of(users3));
         when(mappersMock.convertToOrders(ordersDto3)).thenReturn(orders3);
@@ -231,7 +220,7 @@ class OrdersServiceTest {
     @Test
     void testUpdateOrders() {
 
-        ordersDto4 = OrdersDto.builder()
+        OrdersDto ordersDto4 = OrdersDto.builder()
                 .orderId(1L)
                 .createdAt(Timestamp.valueOf(LocalDateTime.now()))
                 .deliveryAddress("Cherrystr, 19")
@@ -244,7 +233,7 @@ class OrdersServiceTest {
                         .build())
                 .build();
 
-        users4 = new Users(
+        Users users4 = new Users(
                 1L,
                 "Mary Anderson",
                 "maryanderson@example.com",
@@ -252,10 +241,10 @@ class OrdersServiceTest {
                 "PasswordOne",
                 Role.CLIENT,
                 new Cart(),
-                new HashSet<Favorites>(),
-                new HashSet<Orders>());
+                new HashSet<>(),
+                new HashSet<>());
 
-        orders4 = new Orders(
+        Orders orders4 = new Orders(
                 0L,
                 Timestamp.valueOf(LocalDateTime.now()),
                 "Cherrystr, 19",
@@ -264,7 +253,7 @@ class OrdersServiceTest {
                 Status.PAID,
                 Timestamp.valueOf(LocalDateTime.now()),
                 users4,
-                new HashSet<OrderItems>());
+                new HashSet<>());
 
         when(ordersRepositoryMock.findById(ordersDto4.getOrderId())).thenReturn(Optional.of(orders1));
         when(mappersMock.convertToOrders(ordersDto4)).thenReturn(orders4);

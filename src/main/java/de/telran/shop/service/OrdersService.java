@@ -7,7 +7,6 @@ import de.telran.shop.entity.Users;
 import de.telran.shop.exceptions.DataNotFoundInDataBaseException;
 import de.telran.shop.exceptions.InsufficientDataException;
 import de.telran.shop.exceptions.InvalidValueExeption;
-import de.telran.shop.exceptions.WrongIdException;
 import de.telran.shop.mapper.Mappers;
 import de.telran.shop.repository.OrdersRepository;
 import de.telran.shop.repository.UsersRepository;
@@ -27,9 +26,8 @@ public class OrdersService {
 
     public List<OrdersDto> getOrders() {
         List<Orders> ordersList = ordersRepository.findAll();
-        List<OrdersDto> ordersDtoList = MapperUtil.convertList(ordersList, mappers::convertToOrdersDto);
 
-        return ordersDtoList;
+        return MapperUtil.convertList(ordersList, mappers::convertToOrdersDto);
     }
 
 

@@ -45,7 +45,6 @@ class FavoritesServiceTest {
     private Favorites favorites1;
     private Favorites favorites2;
     private Users users1;
-    private Users users2;
     private FavoritesDto favoritesDto1;
     private FavoritesDto favoritesDto2;
 
@@ -59,10 +58,10 @@ class FavoritesServiceTest {
                 "PasswordOne",
                 Role.CLIENT,
                 new Cart(),
-                new HashSet<Favorites>(),
-                new HashSet<Orders>()
+                new HashSet<>(),
+                new HashSet<>()
         );
-        users2 = new Users(
+        Users users2 = new Users(
                 2L,
                 "Steven Svenson",
                 "steven@gmail.com",
@@ -70,8 +69,8 @@ class FavoritesServiceTest {
                 "PasswordTwo",
                 Role.CLIENT,
                 new Cart(),
-                new HashSet<Favorites>(),
-                new HashSet<Orders>()
+                new HashSet<>(),
+                new HashSet<>()
         );
         favorites1 = new Favorites(
                 1L,
@@ -104,7 +103,7 @@ class FavoritesServiceTest {
         when(mappersMock.convertToFavoritesDto(favorites2)).thenReturn(favoritesDto2);
 
         List<FavoritesDto> favorites = favoritesServiceMock.getFavorites();
-        Assertions.assertTrue(favorites.size() > 0);
+        Assertions.assertFalse(favorites.isEmpty());
 
         verify(favoritesRepositoryMock, Mockito.times(1)).findAll();
         verify(mappersMock,Mockito.times(2)).convertToFavoritesDto(any(Favorites.class));
@@ -171,7 +170,7 @@ class FavoritesServiceTest {
 
     @Test
     void updateFavorites() {
-        Long id = 1l;
+        Long id = 1L;
         when(favoritesRepositoryMock.findById(id))
                 .thenReturn(Optional.of(favorites1));
         when(usersRepositoryMock.findById(id)).thenReturn(Optional.of(users1));

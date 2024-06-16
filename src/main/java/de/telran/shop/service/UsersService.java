@@ -5,7 +5,6 @@ import de.telran.shop.dto.UsersDto;
 import de.telran.shop.entity.Users;
 import de.telran.shop.exceptions.DataNotFoundInDataBaseException;
 import de.telran.shop.exceptions.InvalidValueExeption;
-import de.telran.shop.exceptions.WrongIdException;
 import de.telran.shop.mapper.Mappers;
 import de.telran.shop.repository.CartRepository;
 import de.telran.shop.repository.UsersRepository;

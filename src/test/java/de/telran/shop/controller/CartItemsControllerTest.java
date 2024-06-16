@@ -1,7 +1,6 @@
 package de.telran.shop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.telran.shop.dto.CartDto;
 import de.telran.shop.dto.CartItemsDto;
 import de.telran.shop.service.CartItemsService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
