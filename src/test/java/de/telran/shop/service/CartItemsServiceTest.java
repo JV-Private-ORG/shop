@@ -161,38 +161,38 @@ class CartItemsServiceTest {
         verify(cartRepositoryMock,Mockito.times(1)).findById(id);
     }
 
-//    @Test
-//    void updateCartItems() {
-//        Long id = 2l;
-//        CartItems cartItem3 = new CartItems(
-//                2l,
-//                8l,
-//                1,
-//                cart2
-//        );
-//        CartItemsDto cartItemsDto3 = CartItemsDto.builder()
-//                .cartItemId(2l)
-//                .productId(8l)
-//                .quantity(1)
-//                .cart(CartDto.builder()
-//                        .cartId(2l)
-//                        .build())
-//                .build();
-//
-//        when(cartItemsRepositoryMock.findById(cartItem3.getCartItemId())).thenReturn(Optional.of(cartItem2));
-//        when(cartRepositoryMock.findById(id)).thenReturn(Optional.of(cart2));
-//        when(cartItemsRepositoryMock.save(any(CartItems.class))).thenReturn(cartItem3);
-//        when(mappers.convertToCartItemsDto(any(CartItems.class))).thenReturn(cartItemsDto3);
-//
-//        CartItemsDto cartItemsDto = cartItemsServiceMock.updateCartItems(cartItemsDto3);
-//
-//        assertNotNull(cartItemsDto);
-//        assertNotNull(cartItemsDto.getCartItemId());
-//
-//        verify(mappers,Mockito.times(1)).convertToCartItemsDto(any(CartItems.class));
-//        verify(cartRepositoryMock,Mockito.times(1)).findById(id);
-//        verify(cartItemsRepositoryMock,Mockito.times(1)).save(any(CartItems.class));
-//        verify(cartItemsRepositoryMock,Mockito.times(2)).findById(cartItem3.getCartItemId());
+   @Test
+   void updateCartItems() {
+       Long id = 2l;
+       CartItems cartItem3 = new CartItems(
+               2l,
+               8l,
+               1,
+               cart2
+       );
+       CartItemsDto cartItemsDto3 = CartItemsDto.builder()
+               .cartItemId(2l)
+               .productId(8l)
+               .quantity(1)
+               .cart(CartDto.builder()
+                       .cartId(2l)
+                       .build())
+               .build();
 
-//    }
+       when(cartItemsRepositoryMock.findById(cartItem3.getCartItemId())).thenReturn(Optional.of(cartItem2));
+       when(cartRepositoryMock.findById(id)).thenReturn(Optional.of(cart2));
+       when(cartItemsRepositoryMock.save(any(CartItems.class))).thenReturn(cartItem3);
+       when(mappers.convertToCartItemsDto(any(CartItems.class))).thenReturn(cartItemsDto3);
+
+       CartItemsDto cartItemsDto = cartItemsServiceMock.updateCartItems(cartItemsDto3);
+
+       assertNotNull(cartItemsDto);
+       assertNotNull(cartItemsDto.getCartItemId());
+
+       verify(mappers,Mockito.times(1)).convertToCartItemsDto(any(CartItems.class));
+       verify(cartRepositoryMock,Mockito.times(1)).findById(id);
+       verify(cartItemsRepositoryMock,Mockito.times(1)).save(any(CartItems.class));
+       verify(cartItemsRepositoryMock,Mockito.times(2)).findById(cartItem3.getCartItemId());
+
+   }
 }
