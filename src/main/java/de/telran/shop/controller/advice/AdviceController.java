@@ -45,7 +45,7 @@ public class AdviceController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessage> exceptionHandler(Exception exception) {
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .status(HttpStatus.I_AM_A_TEAPOT)
                 .body(new ErrorMessage("Sorry, something went wrong!"));
     }
 
